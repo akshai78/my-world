@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&amp;family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #fff; color: #1a1918; font-family: 'Sora', sans-serif; font-size: 14px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.7; }
+    ::selection { background: rgba(26,25,24,0.1); }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes float1 { 0%,100% { transform: rotate(-4deg) translateY(0px); } 50% { transform: rotate(-4deg) translateY(-6px); } }
+    @keyframes float2 { 0%,100% { transform: rotate(6deg) translateY(0px); } 50% { transform: rotate(6deg) translateY(-8px); } }
+    @keyframes float3 { 0%,100% { transform: rotate(-2deg) translateY(0px); } 50% { transform: rotate(-2deg) translateY(-5px); } }
+    @keyframes dot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    @keyframes curtainUp { 0% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+    @keyframes revealLine { 0% { width:0; opacity:0; } 100% { width:100%; opacity:1; } }
+    @keyframes introName { 0% { opacity:0; letter-spacing:0.3em; } 100% { opacity:1; letter-spacing:-0.01em; } }
+  </style>
+</helmet>
+
+<!-- INTRO OVERLAY -->
+<div id="intro-overlay" style="position:fixed;inset:0;z-index:999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;pointer-events:none;">
+  <p id="intro-name" style="font-family:'Fraunces',serif;font-size:clamp(28px,4vw,48px);font-weight:300;color:#1a1918;letter-spacing:-0.01em;opacity:0;">Akshai</p>
+  <div id="intro-line" style="height:1px;background:#C5C2BA;width:0;opacity:0;"></div>
+  <p id="intro-sub" style="font-size:11px;text-transform:uppercase;letter-spacing:0.2em;color:#AAAAA0;font-weight:600;opacity:0;">Designer · Chennai</p>
+</div>
+
+<!-- DOT GRID BG (top-left decoration) -->
+<div style="position:fixed;top:56px;left:24px;pointer-events:none;z-index:0;" aria-hidden="true">
+  <svg width="140" height="200" viewBox="0 0 140 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <pattern id="dots" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#BFBCB2"></circle>
+    </pattern>
+    <rect width="140" height="200" fill="url(#dots)" style="display: none"></rect>
+  </svg>
+</div>
+
+<!-- DOT GRID BG (bottom-right decoration) -->
+<div style="position:fixed;bottom:40px;right:24px;pointer-events:none;z-index:0;" aria-hidden="true">
+  <svg width="100" height="140" viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <pattern id="dots2" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#BFBCB2"></circle>
+    </pattern>
+    <rect width="100" height="140" fill="url(#dots2)" style="display: none"></rect>
+  </svg>
+</div>
+
+<!-- PILL NAV -->
+<div style="position:sticky;top:16px;z-index:100;display:flex;justify-content:center;padding:0 24px;animation:fadeDown 0.5s ease both;">
+  <div id="nav-pill" style="background:#161616;color:#fff;border-radius:20px;padding:10px 18px 10px 12px;display:inline-flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0;box-shadow:0 4px 24px rgba(0,0,0,0.18);cursor:default;transition:border-radius 0.3s ease;">
+    <!-- Top row -->
+    <div style="display:flex;align-items:center;gap:10px;width:100%;">
+      <div style="width:32px;height:32px;border-radius:50%;background:#2e2e2e;overflow:hidden;flex-shrink:0;border:1.5px solid #333;">
+        <image-slot id="nav-avatar" shape="circle" placeholder="photo" style="width:32px;height:32px;"></image-slot>
+      </div>
+      <span style="font-size:13px;font-weight:500;letter-spacing:-0.01em;color:#fff;">Akshai</span>
+      <span style="width:1px;height:12px;background:#333;flex-shrink:0;"></span>
+      <span style="font-size:11px;color:#888;letter-spacing:0.06em;font-weight:400;">CHENNAI</span>
+      <span style="width:1px;height:12px;background:#333;flex-shrink:0;"></span>
+      <span style="font-size:11px;color:#888;letter-spacing:0.04em;" id="nav-time">--:-- IST</span>
+      <svg id="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" style="color:#555;flex-shrink:0;margin-left:4px;transition:transform 0.3s ease;"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+    <!-- Sub row -->
+    <div style="font-size:10px;color:#444;letter-spacing:0.1em;font-weight:500;text-transform:uppercase;padding-left:42px;margin-top:3px;">building · at Zoho</div>
+    <!-- Social icons (hidden by default) -->
+    <div id="nav-socials" style="overflow:hidden;max-height:0;opacity:0;transition:max-height 0.35s cubic-bezier(0.22,1,0.36,1),opacity 0.25s ease;width:100%;margin-top:0;">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 0 2px 0;">
+        <!-- Email -->
+        <a href="mailto:akshaikrishna78@gmail.com" title="Email" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6l7 5 7-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/akshai-krishna-1b8880218/" target="_blank" rel="noopener" title="LinkedIn" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 8v5M5.5 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.5 13v-2.5A1.5 1.5 0 0110 9v0a1.5 1.5 0 011.5 1.5V13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </a>
+        <!-- Behance -->
+        <a href="https://www.behance.net/akshai-krishna" target="_blank" rel="noopener" title="Behance" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><text x="1" y="12" font-family="sans-serif" font-size="12" font-weight="600" fill="currentColor">Bē</text></svg>
+        </a>
+        <!-- Instagram -->
+        <a href="#" title="Instagram" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="4" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="3.5" stroke="currentColor" stroke-width="1.4"/><circle cx="13" cy="5" r="1" fill="currentColor"/></svg>
+        </a>
+        <!-- X / Twitter -->
+        <a href="#" title="X" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12.6 1h2.4L9.8 7l5.7 8H10L6.4 9.7 2.3 15H0l5.6-6.4L.2 1H5.5l3.2 4.7L12.6 1zm-.8 12.7h1.3L4.3 2.4H2.9l8.9 11.3z"/></svg>
+        </a>
+        <!-- GitHub -->
+        <a href="#" title="GitHub" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 1a8 8 0 00-2.53 15.59c.4.07.55-.17.55-.38v-1.34C4.73 15.3 4.27 13.7 4.27 13.7c-.36-.92-.88-1.16-.88-1.16-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.21 1.86.86 2.31.66.07-.52.28-.86.5-1.06-1.77-.2-3.63-.89-3.63-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 019 5.56c.68 0 1.36.09 2 .27 1.52-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 009 1z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO SECTION -->
+<section style="min-height:calc(100vh - 80px);padding:clamp(40px,6vw,80px) clamp(24px,5vw,80px) 60px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,5vw,80px);align-items:center;max-width:1280px;margin:0 auto;position:relative;z-index:1;">
+
+  <!-- LEFT: TEXT -->
+  <div style="animation:fadeUp 0.7s 0.1s ease both;opacity:0;">
+    <h1 style="font-family:'Fraunces',serif;font-size:clamp(42px,5.8vw,76px);font-weight:400;line-height:1.06;letter-spacing:-0.02em;color:#1a1918;margin-bottom:28px;">
+      i tell stories,<br>
+      <em style="font-style:italic;font-weight:400;">build things.</em>
+    </h1>
+    <p style="font-size:15px;color:#6b6860;line-height:1.75;max-width:380px;margin-bottom:36px;">Designer at Zoho. I work at the intersection of visual craft and product thinking — making things that feel simple and intentional.</p>
+
+    <!-- EMAIL BAR -->
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E0DDD5;border-radius:100px;padding:8px 16px 8px 18px;">
+        <span style="font-size:13px;color:#6b6860;white-space:nowrap;">akshaikrishna78@gmail.com</span>
+        <a href="mailto:akshaikrishna78@gmail.com" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#f5f3ee;color:#888;flex-shrink:0;">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H5M11 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+      </div>
+      <button onclick="navigator.clipboard.writeText('akshaikrishna78@gmail.com').then(()=&gt;{this.textContent='Copied!';setTimeout(()=&gt;this.textContent='Copy',1500)})" style="background:#1a1918;color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-family:'Sora',sans-serif;cursor:pointer;font-weight:500;">Copy</button>
+      <a href="#work" style="border:1.5px solid #C5C2BA;border-radius:100px;padding:9px 20px;font-size:13px;color:#1a1918;font-weight:400;white-space:nowrap;background:transparent;" style-hover="background:#1a1918;color:#fff;border-color:#1a1918;">See the work</a>
+    </div>
+  </div>
+
+  <!-- RIGHT: COLLAGE -->
+  <div style="position:relative;height:clamp(480px,55vw,680px);animation:fadeUp 0.7s 0.25s ease both;opacity:0;">
+
+    <!-- Polaroid photo -->
+    <div style="position:absolute;top:0;left:4%;width:44%;animation:float1 6s ease-in-out infinite;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.13));">
+      <div style="background:#fff;padding:10px 10px 36px 10px;border-radius:3px;">
+        <div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:#e8e5df;">
+          <image-slot id="hero-photo" shape="rect" radius="0" placeholder="drop your photo here" style="width:100%;height:100%;"></image-slot>
+        </div>
+      </div>
+      <p style="font-family:'Caveat',cursive;font-size:16px;color:#5a5750;text-align:center;margin-top:-28px;position:relative;z-index:1;pointer-events:none;">me, lately</p>
+    </div>
+
+    <!-- Object card 1 (jersey / item) -->
+    <div style="position:absolute;top:2%;right:2%;width:30%;animation:float2 7s ease-in-out infinite;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.10));">
+      <div style="background:#fff;border-radius:16px;padding:16px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        <image-slot id="object-1" shape="rounded" radius="8" placeholder="drop an object / hobby image" style="width:100%;height:100%;"></image-slot>
+      </div>
+    </div>
+
+    <!-- Object card 2 (car / thing you love) -->
+    <div style="position:absolute;top:46%;left:10%;width:52%;animation:float3 8s ease-in-out infinite;filter:drop-shadow(0 8px 28px rgba(0,0,0,0.10));">
+      <div style="background:#fff;border-radius:16px;padding:12px;overflow:hidden;">
+        <image-slot id="object-2" shape="rounded" radius="8" placeholder="drop another image — car, gadget, anything" style="width:100%;aspect-ratio:16/9;"></image-slot>
+      </div>
+    </div>
+
+    <!-- Laptop / work photo -->
+    <div style="position:absolute;bottom:0;left:2%;width:40%;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.10));">
+      <div style="background:#fff;border-radius:8px;padding:8px;overflow:hidden;">
+        <image-slot id="object-3" shape="rounded" radius="4" placeholder="laptop / desk / workspace photo" style="width:100%;aspect-ratio:4/3;"></image-slot>
+      </div>
+    </div>
+
+    <!-- Sticky note -->
+    <div style="position:absolute;bottom:4%;right:0%;width:38%;animation:float2 9s ease-in-out infinite 1s;">
+      <div style="background:#F5E96C;border-radius:4px;padding:18px 20px;box-shadow:2px 4px 16px rgba(0,0,0,0.10),inset 0 -2px 0 rgba(0,0,0,0.06);">
+        <p style="font-family:'Caveat',cursive;font-size:clamp(13px,1.4vw,17px);color:#2a2820;line-height:1.45;">taste is the last thing that can't be automated. read the piece →</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div style="height:1px;background:linear-gradient(90deg,transparent,#D5D2C8 30%,#D5D2C8 70%,transparent);max-width:1280px;margin:0 auto;"></div>
+
+<!-- TOOLS MARQUEE -->
+<section style="padding:20px 0;overflow:hidden;white-space:nowrap;background:#fff;">
+  <div style="display:inline-flex;animation:marquee 24s linear infinite;">
+    <span style="display:inline-flex;align-items:center;">
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Figma</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Photoshop</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Illustrator</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">After Effects</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Blender</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">CSS &amp; HTML</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Figma</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Photoshop</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Illustrator</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">After Effects</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Blender</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">CSS &amp; HTML</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+    </span>
+    <span style="display:inline-flex;align-items:center;" aria-hidden="true">
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Figma</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Photoshop</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Illustrator</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">After Effects</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Blender</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">CSS &amp; HTML</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Figma</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Photoshop</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Illustrator</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">After Effects</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">Blender</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+      <span style="font-size:11px;color:#AAAAA0;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0 24px;">CSS &amp; HTML</span><span style="color:#CCCCC4;font-size:10px;">·</span>
+    </span>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div style="height:1px;background:linear-gradient(90deg,transparent,#D5D2C8 30%,#D5D2C8 70%,transparent);max-width:1280px;margin:0 auto;"></div>
+
+<!-- ABOUT -->
+<section style="padding:clamp(64px,8vw,100px) clamp(24px,5vw,80px);max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,6vw,100px);align-items:start;">
+  <div>
+    <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#AAAAA0;margin-bottom:24px;font-weight:600;">About</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:clamp(28px,3.5vw,44px);font-weight:300;line-height:1.2;color:#1a1918;margin-bottom:28px;">I design with a focus on <em style="font-style:italic;">clarity, craft,</em> and how things work.</h2>
+    <p style="font-size:14px;color:#6b6860;line-height:1.85;margin-bottom:16px;">My background in visual communication shapes how I see design, while my curiosity about technology, AI, and design systems pushes me to explore beyond the interface.</p>
+    <p style="font-size:14px;color:#6b6860;line-height:1.85;">I like understanding the problem, challenging assumptions, and turning ideas into experiences that feel simple and intentional.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div style="border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#E0DDD5;">
+      <image-slot id="about-photo" shape="rect" radius="0" placeholder="drop a photo — candid or portrait" style="width:100%;height:100%;"></image-slot>
+    </div>
+    <p style="font-family:'Caveat',cursive;font-size:15px;color:#AAAAA0;padding-left:4px;">Akshai · Chennai · 2026</p>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" style="padding:clamp(48px,7vw,88px) clamp(24px,5vw,80px);max-width:1280px;margin:0 auto;">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px;">
+    <div>
+      <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#AAAAA0;margin-bottom:8px;font-weight:600;">Selected work</p>
+      <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.5vw,42px);font-weight:300;color:#1a1918;line-height:1.1;">The work. <em style="font-style:italic;color:#7a7870;">All of it.</em></h2>
+    </div>
+    <a href="https://www.behance.net/akshai-krishna" target="_blank" rel="noopener" style="font-size:12px;color:#AAAAA0;border-bottom:1px solid #D5D2C8;padding-bottom:2px;">Behance ↗</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px;">
+
+    <a href="https://www.behance.net/gallery/143691589/Black-and-white-logos" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
+      <div style="aspect-ratio:4/3;background:#F5F3EE;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#D0CEC6" stroke-width="1.5"></circle><text x="32" y="37" text-anchor="middle" font-family="serif" font-size="18" fill="#C0BDB5">B&amp;W</text></svg>
+      </div>
+      <div style="padding:18px 20px;">
+        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Branding · 2022</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;">Black &amp; White <em style="font-style:italic;">Logos</em></h3>
+        <p style="font-size:12px;color:#9a9890;line-height:1.6;">Logo systems stripped to their essential form.</p>
+      </div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/143644477/MINE-(-the-artist-collabe-project)" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
+      <div style="aspect-ratio:4/3;background:#F0EDE8;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="8" y="8" width="48" height="48" rx="4" stroke="#D0CEC6" stroke-width="1.5"></rect><text x="32" y="38" text-anchor="middle" font-family="serif" font-size="18" font-style="italic" fill="#C0BDB5">MINE</text></svg>
+      </div>
+      <div style="padding:18px 20px;">
+        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Art Direction · 2022</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">MINE</em> — artist collab</h3>
+        <p style="font-size:12px;color:#9a9890;line-height:1.6;">A visual collaboration between artists.</p>
+      </div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/143642877/payani-UI-(-travel-journal-planer)" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
+      <div style="aspect-ratio:4/3;background:#EDF0EE;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M20 12h24a4 4 0 014 4v32a4 4 0 01-4 4H20a4 4 0 01-4-4V16a4 4 0 014-4z" stroke="#D0CEC6" stroke-width="1.5"></path><path d="M24 24h16M24 32h12" stroke="#D0CEC6" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div style="padding:18px 20px;">
+        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">UI Design · 2022</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">Payani</em> — travel journal</h3>
+        <p style="font-size:12px;color:#9a9890;line-height:1.6;">A UI for journaling and planning travel.</p>
+      </div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/143641291/digital-paintings" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
+      <div style="aspect-ratio:4/3;background:#EEE8F0;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0CEC6" stroke-width="1.5"></circle><circle cx="24" cy="26" r="4" fill="#D0CEC6"></circle><path d="M14 44l14-14 8 8 6-6 8 8" stroke="#D0CEC6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+      <div style="padding:18px 20px;">
+        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Illustration · 2022</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">Digital</em> paintings</h3>
+        <p style="font-size:12px;color:#9a9890;line-height:1.6;">Painted work — texture, light, and mood.</p>
+      </div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/143643773/Dodge-mine-(-concept-game)" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
+      <div style="aspect-ratio:4/3;background:#EEF0E8;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><polygon points="32,8 56,24 56,40 32,56 8,40 8,24" stroke="#D0CEC6" stroke-width="1.5" fill="none"></polygon><circle cx="32" cy="32" r="8" stroke="#D0CEC6" stroke-width="1.5"></circle></svg>
+      </div>
+      <div style="padding:18px 20px;">
+        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Game Design · 2022</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">Dodge Mine</em> — concept</h3>
+        <p style="font-size:12px;color:#9a9890;line-height:1.6;">A concept game — mechanic to screen.</p>
+      </div>
+    </a>
+
+    <div style="background:#F5F3EE;border:1.5px dashed #D5D2C8;border-radius:12px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+      <span style="font-size:22px;color:#D0CEC6;">+</span>
+      <span style="font-size:11px;color:#C5C2BA;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">More coming</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT FOOTER -->
+<section style="padding:clamp(64px,8vw,100px) clamp(24px,5vw,80px) clamp(48px,6vw,72px);max-width:1280px;margin:0 auto;">
+  <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#AAAAA0;margin-bottom:24px;font-weight:600;">Say hello</p>
+  <h2 style="font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,68px);font-weight:300;line-height:1.08;color:#1a1918;margin-bottom:40px;">Let's make something<br><em style="font-style:italic;color:#9a9890;">worth remembering.</em></h2>
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:52px;">
+    <a href="mailto:akshaikrishna78@gmail.com" style="font-size:15px;color:#1a1918;border-bottom:1.5px solid #1a1918;padding-bottom:2px;">akshaikrishna78@gmail.com</a>
+    <a href="https://www.linkedin.com/in/akshai-krishna-1b8880218/" target="_blank" rel="noopener" style="font-size:13px;color:#AAAAA0;display:flex;align-items:center;gap:4px;border-bottom:1px solid #D5D2C8;padding-bottom:2px;">LinkedIn ↗</a>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid #E0DDD5;padding-top:24px;">
+    <p style="font-size:12px;color:#C0BDB5;">© 2026 Akshai · Chennai</p>
+    <a href="#" style="font-size:12px;color:#C0BDB5;">Back to top ↑</a>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    // Intro animation sequence
+    const overlay = document.getElementById('intro-overlay');
+    const name = document.getElementById('intro-name');
+    const line = document.getElementById('intro-line');
+    const sub = document.getElementById('intro-sub');
+    if (overlay && name && line && sub) {
+      // Step 1: fade in name
+      setTimeout(() => {
+        name.style.transition = 'opacity 0.6s ease, letter-spacing 0.6s ease';
+        name.style.opacity = '1';
+        name.style.letterSpacing = '-0.01em';
+      }, 100);
+      // Step 2: expand line
+      setTimeout(() => {
+        line.style.transition = 'width 0.5s ease, opacity 0.4s ease';
+        line.style.width = '80px';
+        line.style.opacity = '1';
+      }, 500);
+      // Step 3: fade in subtitle
+      setTimeout(() => {
+        sub.style.transition = 'opacity 0.5s ease';
+        sub.style.opacity = '1';
+      }, 800);
+      // Step 4: slide overlay up and remove
+      setTimeout(() => {
+        overlay.style.transition = 'transform 0.7s cubic-bezier(0.76,0,0.24,1), opacity 0.4s ease';
+        overlay.style.transform = 'translateY(-100%)';
+        overlay.style.opacity = '0';
+      }, 1500);
+      setTimeout(() => { overlay.remove(); }, 2200);
+    }
+
+    // Nav pill hover expand
+    const pill = document.getElementById('nav-pill');
+    const socials = document.getElementById('nav-socials');
+    const chevron = document.getElementById('nav-chevron');
+    if (pill && socials && chevron) {
+      pill.addEventListener('mouseenter', () => {
+        socials.style.maxHeight = '80px';
+        socials.style.opacity = '1';
+        socials.style.marginTop = '4px';
+        chevron.style.transform = 'rotate(180deg)';
+        pill.style.borderRadius = '16px';
+      });
+      pill.addEventListener('mouseleave', () => {
+        socials.style.maxHeight = '0';
+        socials.style.opacity = '0';
+        socials.style.marginTop = '0';
+        chevron.style.transform = 'rotate(0deg)';
+        pill.style.borderRadius = '20px';
+      });
+    }
+
+    // Live clock
+    const updateTime = () => {
+      const el = document.getElementById('nav-time');
+      if (!el) return;
+      const now = new Date();
+      const ist = new Intl.DateTimeFormat('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Kolkata' }).format(now);
+      el.textContent = ist + ' IST';
+    };
+    updateTime();
+    setInterval(updateTime, 30000);
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        if (!id) return;
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Scroll animations
+    const scrollObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = el.dataset.delay || 0;
+          setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0) scale(1)';
+          }, delay);
+          scrollObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    // Sections slide up
+    document.querySelectorAll('section:not(:first-of-type)').forEach((s, i) => {
+      s.style.opacity = '0';
+      s.style.transform = 'translateY(32px)';
+      s.style.transition = 'opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1)';
+      s.dataset.delay = i * 40;
+      scrollObserver.observe(s);
+    });
+
+    // Work cards stagger
+    document.querySelectorAll('#work a, #work div[style*="dashed"]').forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(28px) scale(0.98)';
+      card.style.transition = `opacity 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 80}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 80}ms`;
+      scrollObserver.observe(card);
+    });
+
+    // About section children
+    document.querySelectorAll('section:nth-of-type(3) > div').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 120}ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 120}ms`;
+      scrollObserver.observe(el);
+    });
+
+    // Parallax on collage items
+    const collageItems = document.querySelectorAll('#intro-overlay ~ * [style*="float"]');
+    const onScroll = () => {
+      const scrollY = window.scrollY;
+      document.querySelectorAll('[style*="float1"], [style*="float2"], [style*="float3"]').forEach((el, i) => {
+        const speed = [0.04, 0.06, 0.03][i % 3];
+        el.style.setProperty('--py', `${scrollY * speed}px`);
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+}
+</script>
+</body>
+</html>
