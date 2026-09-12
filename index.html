@@ -35,6 +35,51 @@
     .tool { display:inline-flex; align-items:center; gap:8px; padding:0 28px; font-size:11px; color:#AAAAA0; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; }
     .tool svg { width:15px; height:15px; flex-shrink:0; display:block; }
     .tool-dot { color:#CCCCC4; font-size:10px; }
+    #journey { position: relative; }
+    .journey-intro { padding: clamp(64px, 8vw, 100px) clamp(24px, 5vw, 80px) 12px; max-width: 1280px; margin: 0 auto; }
+    .journey-track { position: relative; height: 600vh; }
+    .journey-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+    .journey-shell { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.95fr); gap: clamp(28px, 5vw, 72px); align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 80px); height: min(100vh, 820px); }
+    .journey-copy { position: relative; min-height: 340px; height: 100%; max-height: 520px; }
+    .journey-step { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding-left: 28px; border-left: 1px solid #E8E4DC; opacity: 0; transform: translateY(28px); pointer-events: none; transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1); }
+    .journey-step::before { content: ''; position: absolute; left: -5px; top: 42%; width: 9px; height: 9px; border-radius: 50%; background: #D5D2C8; box-shadow: 0 0 0 4px #fff; transition: background 0.35s ease, transform 0.35s ease; }
+    .journey-step.is-active { opacity: 1; transform: translateY(0); pointer-events: auto; z-index: 2; }
+    .journey-step.is-active::before { background: #1a1918; transform: scale(1.15); }
+    .journey-step.is-exit { opacity: 0; transform: translateY(-24px); }
+    .journey-step .era { font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #AAAAA0; font-weight: 600; margin-bottom: 14px; }
+    .journey-step h3 { font-family: 'Fraunces', serif; font-size: clamp(26px, 3.2vw, 40px); font-weight: 300; line-height: 1.18; color: #1a1918; margin-bottom: 16px; letter-spacing: -0.01em; }
+    .journey-step p { font-size: 15px; color: #6b6860; line-height: 1.8; max-width: 440px; }
+    .journey-step .place-tag { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-size: 12px; color: #8a8780; letter-spacing: 0.04em; }
+    .journey-step .place-tag span { width: 6px; height: 6px; border-radius: 50%; background: #C5C2BA; }
+    .journey-progress { position: absolute; left: 0; bottom: 8px; display: flex; gap: 6px; padding-left: 28px; z-index: 3; }
+    .journey-progress i { width: 18px; height: 2px; background: #E0DDD5; border-radius: 2px; transition: background 0.35s ease, width 0.35s ease; }
+    .journey-progress i.is-on { background: #1a1918; width: 28px; }
+    .journey-map-wrap { height: 100%; display: flex; align-items: center; }
+    .journey-map { position: relative; width: 100%; background: linear-gradient(165deg, #F7F5F0 0%, #EEEBE4 55%, #E8E4DC 100%); border: 1px solid #E0DDD5; border-radius: 20px; overflow: hidden; aspect-ratio: 1 / 1.05; max-height: min(72vh, 560px); }
+    .journey-map-label { position: absolute; top: 20px; left: 22px; z-index: 2; font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: #AAAAA0; font-weight: 600; }
+    .journey-map-caption { position: absolute; bottom: 20px; left: 22px; right: 22px; z-index: 2; font-family: 'Caveat', cursive; font-size: 17px; color: #7a7870; transition: opacity 0.3s ease; }
+    .journey-map svg.map-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .journey-pin { position: absolute; z-index: 3; width: 18px; height: 18px; margin-left: -9px; margin-top: -9px; border-radius: 50%; background: #fff; border: 2px solid #C5C2BA; cursor: pointer; transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.3s ease; }
+    .journey-pin::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: #C5C2BA; transition: background 0.3s ease; }
+    .journey-pin.is-lit { border-color: #1a1918; box-shadow: 0 0 0 6px rgba(26,25,24,0.08); transform: scale(1.2); }
+    .journey-pin.is-lit::after { background: #1a1918; }
+    .journey-pin:hover, .journey-pin.is-open { transform: scale(1.28); z-index: 6; }
+    .journey-pop { position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(8px) scale(0.96); width: 148px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; z-index: 8; }
+    .journey-pin:hover .journey-pop, .journey-pin.is-open .journey-pop { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto; }
+    .journey-pop-card { position: relative; background: #fff; border-radius: 4px; padding: 8px 8px 22px; box-shadow: 0 10px 28px rgba(0,0,0,0.12); }
+    .journey-pop-card .slot { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #E8E5DF; border-radius: 2px; }
+    .journey-pop-card .slot image-slot { width: 100%; height: 100%; display: block; }
+    .journey-pop-card em { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; font-family: 'Caveat', cursive; font-size: 13px; color: #5a5750; font-style: normal; }
+    .journey-path { fill: none; stroke: #D0CEC6; stroke-width: 1.5; stroke-dasharray: 4 6; transition: stroke 0.4s ease; }
+    .journey-path.is-drawn { stroke: #1a1918; stroke-dasharray: none; }
+    @media (max-width: 860px) {
+      .journey-track { height: 520vh; }
+      .journey-shell { grid-template-columns: 1fr; gap: 18px; align-content: center; height: auto; padding-top: 88px; padding-bottom: 24px; }
+      .journey-map-wrap { order: -1; }
+      .journey-map { max-height: 42vh; aspect-ratio: 16/11; }
+      .journey-copy { min-height: 260px; max-height: none; height: 280px; }
+      .journey-step { padding-left: 22px; }
+    }
   </style>
 </helmet>
 
@@ -94,19 +139,19 @@
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 8v5M5.5 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.5 13v-2.5A1.5 1.5 0 0110 9v0a1.5 1.5 0 011.5 1.5V13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </a>
         <!-- Behance -->
-        <a href="https://www.behance.net/akshai-krishna" target="_blank" rel="noopener" title="Behance" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+        <a href="https://www.behance.net/akshaikrishna2" target="_blank" rel="noopener" title="Behance" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
           <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><text x="1" y="12" font-family="sans-serif" font-size="12" font-weight="600" fill="currentColor">Bē</text></svg>
         </a>
         <!-- Instagram -->
-        <a href="#" title="Instagram" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+        <a href="https://www.instagram.com/akshai_me/" target="_blank" rel="noopener" title="Instagram" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="4" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="3.5" stroke="currentColor" stroke-width="1.4"/><circle cx="13" cy="5" r="1" fill="currentColor"/></svg>
         </a>
         <!-- X / Twitter -->
-        <a href="#" title="X" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+        <a href="https://x.com/AkshaiK52232306" target="_blank" rel="noopener" title="X" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12.6 1h2.4L9.8 7l5.7 8H10L6.4 9.7 2.3 15H0l5.6-6.4L.2 1H5.5l3.2 4.7L12.6 1zm-.8 12.7h1.3L4.3 2.4H2.9l8.9 11.3z"/></svg>
         </a>
         <!-- GitHub -->
-        <a href="#" title="GitHub" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
+        <a href="https://github.com/akshai78" target="_blank" rel="noopener" title="GitHub" style="width:44px;height:44px;background:#252525;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;transition:background 0.15s;" style-hover="background:#333;">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 1a8 8 0 00-2.53 15.59c.4.07.55-.17.55-.38v-1.34C4.73 15.3 4.27 13.7 4.27 13.7c-.36-.92-.88-1.16-.88-1.16-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.21 1.86.86 2.31.66.07-.52.28-.86.5-1.06-1.77-.2-3.63-.89-3.63-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 019 5.56c.68 0 1.36.09 2 .27 1.52-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 009 1z"/></svg>
         </a>
       </div>
@@ -134,7 +179,7 @@
         </a>
       </div>
       <button onclick="navigator.clipboard.writeText('akshaikrishna78@gmail.com').then(()=&gt;{this.textContent='Copied!';setTimeout(()=&gt;this.textContent='Copy',1500)})" style="background:#1a1918;color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-family:'Sora',sans-serif;cursor:pointer;font-weight:500;">Copy</button>
-      <a href="#work" style="border:1.5px solid #C5C2BA;border-radius:100px;padding:9px 20px;font-size:13px;color:#1a1918;font-weight:400;white-space:nowrap;background:transparent;" style-hover="background:#1a1918;color:#fff;border-color:#1a1918;">See the work</a>
+      <a href="work.html" style="border:1.5px solid #C5C2BA;border-radius:100px;padding:9px 20px;font-size:13px;color:#1a1918;font-weight:400;white-space:nowrap;background:transparent;" style-hover="background:#1a1918;color:#fff;border-color:#1a1918;">See the work</a>
     </div>
   </div>
 
@@ -226,78 +271,145 @@
   </div>
 </section>
 
-<!-- WORK -->
-<section id="work" style="padding:clamp(48px,7vw,88px) clamp(24px,5vw,80px);max-width:1280px;margin:0 auto;">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px;">
-    <div>
-      <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#AAAAA0;margin-bottom:8px;font-weight:600;">Selected work</p>
-      <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.5vw,42px);font-weight:300;color:#1a1918;line-height:1.1;">The work. <em style="font-style:italic;color:#7a7870;">All of it.</em></h2>
-    </div>
-    <a href="https://www.behance.net/akshai-krishna" target="_blank" rel="noopener" style="font-size:12px;color:#AAAAA0;border-bottom:1px solid #D5D2C8;padding-bottom:2px;">Behance ↗</a>
+<!-- JOURNEY MAP -->
+<section id="journey">
+  <div class="journey-intro">
+    <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#AAAAA0;margin-bottom:12px;font-weight:600;">Journey</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:clamp(28px,3.5vw,44px);font-weight:300;line-height:1.15;color:#1a1918;max-width:520px;">From a kid with crayons to a designer who <em style="font-style:italic;">builds.</em></h2>
+    <p style="font-size:14px;color:#6b6860;line-height:1.75;max-width:420px;margin-top:14px;">Scroll — each chapter replaces the last. Hover pins for a glimpse.</p>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px;">
 
-    <a href="https://www.behance.net/gallery/143691589/Black-and-white-logos" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
-      <div style="aspect-ratio:4/3;background:#F5F3EE;display:flex;align-items:center;justify-content:center;padding:24px;">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#D0CEC6" stroke-width="1.5"></circle><text x="32" y="37" text-anchor="middle" font-family="serif" font-size="18" fill="#C0BDB5">B&amp;W</text></svg>
-      </div>
-      <div style="padding:18px 20px;">
-        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Branding · 2022</p>
-        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;">Black &amp; White <em style="font-style:italic;">Logos</em></h3>
-        <p style="font-size:12px;color:#9a9890;line-height:1.6;">Logo systems stripped to their essential form.</p>
-      </div>
-    </a>
+  <div class="journey-track" id="journey-track">
+    <div class="journey-sticky">
+      <div class="journey-shell">
+        <div class="journey-copy">
+          <article class="journey-step is-active" data-step="0">
+            <p class="era">Chapter 01 · Childhood</p>
+            <h3>I chased colour before I knew the word <em style="font-style:italic;">design.</em></h3>
+            <p>Art was never a subject — it was how I made sense of the world. Sketchbooks filled faster than notebooks. Lines, light, and little invented worlds followed me home from school.</p>
+            <div class="place-tag"><span></span>Home · Chennai</div>
+          </article>
 
-    <a href="https://www.behance.net/gallery/143644477/MINE-(-the-artist-collabe-project)" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
-      <div style="aspect-ratio:4/3;background:#F0EDE8;display:flex;align-items:center;justify-content:center;padding:24px;">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="8" y="8" width="48" height="48" rx="4" stroke="#D0CEC6" stroke-width="1.5"></rect><text x="32" y="38" text-anchor="middle" font-family="serif" font-size="18" font-style="italic" fill="#C0BDB5">MINE</text></svg>
-      </div>
-      <div style="padding:18px 20px;">
-        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Art Direction · 2022</p>
-        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">MINE</em> — artist collab</h3>
-        <p style="font-size:12px;color:#9a9890;line-height:1.6;">A visual collaboration between artists.</p>
-      </div>
-    </a>
+          <article class="journey-step" data-step="1">
+            <p class="era">Chapter 02 · College of Fine Arts</p>
+            <h3>Where craft met intention.</h3>
+            <p>At the Government College of Fine Arts, Chennai, the pencil sharpened into a practice. Form, composition, and visual language stopped being instincts and became tools. This is where my design journey truly began — not as decoration, but as a way of seeing.</p>
+            <div class="place-tag"><span></span>College of Fine Arts · Chennai</div>
+          </article>
 
-    <a href="https://www.behance.net/gallery/143642877/payani-UI-(-travel-journal-planer)" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
-      <div style="aspect-ratio:4/3;background:#EDF0EE;display:flex;align-items:center;justify-content:center;padding:24px;">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M20 12h24a4 4 0 014 4v32a4 4 0 01-4 4H20a4 4 0 01-4-4V16a4 4 0 014-4z" stroke="#D0CEC6" stroke-width="1.5"></path><path d="M24 24h16M24 32h12" stroke="#D0CEC6" stroke-width="1.5" stroke-linecap="round"></path></svg>
-      </div>
-      <div style="padding:18px 20px;">
-        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">UI Design · 2022</p>
-        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">Payani</em> — travel journal</h3>
-        <p style="font-size:12px;color:#9a9890;line-height:1.6;">A UI for journaling and planning travel.</p>
-      </div>
-    </a>
+          <article class="journey-step" data-step="2">
+            <p class="era">Chapter 03 · UX Mint</p>
+            <h3>Design as a problem solver.</h3>
+            <p>UX Mint taught me that beauty without clarity is incomplete. Research, flows, friction, and empathy — the academy rewired how I think. Suddenly every screen was a question: what are we solving, and for whom?</p>
+            <div class="place-tag"><span></span>UX Mint · Academy</div>
+          </article>
 
-    <a href="https://www.behance.net/gallery/143641291/digital-paintings" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
-      <div style="aspect-ratio:4/3;background:#EEE8F0;display:flex;align-items:center;justify-content:center;padding:24px;">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#D0CEC6" stroke-width="1.5"></circle><circle cx="24" cy="26" r="4" fill="#D0CEC6"></circle><path d="M14 44l14-14 8 8 6-6 8 8" stroke="#D0CEC6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      </div>
-      <div style="padding:18px 20px;">
-        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Illustration · 2022</p>
-        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">Digital</em> paintings</h3>
-        <p style="font-size:12px;color:#9a9890;line-height:1.6;">Painted work — texture, light, and mood.</p>
-      </div>
-    </a>
+          <article class="journey-step" data-step="3">
+            <p class="era">Chapter 04 · The in-between</p>
+            <h3>I wandered looking for the right room.</h3>
+            <p>After the academy I roamed — studios, cities, conversations — hunting for a place where craft and product could live in the same sentence. Some doors closed. Some opened halfway. The map got denser, and so did my taste.</p>
+            <div class="place-tag"><span></span>Roaming · Finding home</div>
+          </article>
 
-    <a href="https://www.behance.net/gallery/143643773/Dodge-mine-(-concept-game)" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #E5E2DA;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" style-hover="box-shadow:0 8px 32px rgba(0,0,0,0.09);">
-      <div style="aspect-ratio:4/3;background:#EEF0E8;display:flex;align-items:center;justify-content:center;padding:24px;">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><polygon points="32,8 56,24 56,40 32,56 8,40 8,24" stroke="#D0CEC6" stroke-width="1.5" fill="none"></polygon><circle cx="32" cy="32" r="8" stroke="#D0CEC6" stroke-width="1.5"></circle></svg>
-      </div>
-      <div style="padding:18px 20px;">
-        <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#AAAAA0;margin-bottom:6px;font-weight:600;">Game Design · 2022</p>
-        <h3 style="font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:#1a1918;line-height:1.25;margin-bottom:6px;"><em style="font-style:italic;">Dodge Mine</em> — concept</h3>
-        <p style="font-size:12px;color:#9a9890;line-height:1.6;">A concept game — mechanic to screen.</p>
-      </div>
-    </a>
+          <article class="journey-step" data-step="4">
+            <p class="era">Chapter 05 · Zoho</p>
+            <h3>Now I design the whole stack of feeling.</h3>
+            <p>Today I am a designer at Zoho — moving across illustration, UI, motion, and even code. One day a visual system; the next a prototype that ships. The craft I started with as a kid still sits under everything.</p>
+            <div class="place-tag"><span></span>Zoho · Building</div>
+          </article>
 
-    <div style="background:#F5F3EE;border:1.5px dashed #D5D2C8;border-radius:12px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
-      <span style="font-size:22px;color:#D0CEC6;">+</span>
-      <span style="font-size:11px;color:#C5C2BA;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">More coming</span>
+          <article class="journey-step" data-step="5">
+            <p class="era">Chapter 06 · Still writing</p>
+            <h3>The journey will continue…</h3>
+            <p>Nothing here is a finish line. New tools, new problems, new rooms to walk into. The map is unfinished on purpose — there is always another pin waiting.</p>
+            <div class="place-tag"><span></span>Wherever next leads</div>
+          </article>
+
+          <div class="journey-progress" id="journey-progress" aria-hidden="true">
+            <i class="is-on"></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+
+        <div class="journey-map-wrap">
+          <div class="journey-map" id="journey-map">
+            <p class="journey-map-label">Path · so far</p>
+            <p class="journey-map-caption" id="journey-caption">Home · Chennai</p>
+
+            <svg class="map-art" viewBox="0 0 400 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <pattern id="map-dots" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <circle cx="1.5" cy="1.5" r="1" fill="#C9C5BB"></circle>
+                </pattern>
+              </defs>
+              <rect width="400" height="420" fill="url(#map-dots)" opacity="0.45"></rect>
+              <path class="journey-path" id="journey-path" d="M78 340 C 90 300, 110 270, 130 250 C 160 220, 175 200, 190 175 C 210 140, 230 120, 255 105 C 290 85, 320 95, 340 70"></path>
+              <path d="M40 380 Q 120 350 180 300" fill="none" stroke="#D8D4CA" stroke-width="1" opacity="0.7"></path>
+              <path d="M300 300 Q 340 250 360 180" fill="none" stroke="#D8D4CA" stroke-width="1" opacity="0.5"></path>
+              <circle cx="70" cy="60" r="28" fill="none" stroke="#D5D2C8" stroke-width="1" opacity="0.5"></circle>
+              <circle cx="330" cy="340" r="40" fill="none" stroke="#D5D2C8" stroke-width="1" opacity="0.4"></circle>
+            </svg>
+
+            <div class="journey-pin is-lit" data-pin="0" style="left:19.5%;top:81%;" role="button" tabindex="0" aria-label="Home, Chennai">
+              <div class="journey-pop">
+                <div class="journey-pop-card">
+                  <div class="slot"><image-slot id="journey-img-0" shape="rect" radius="0" placeholder="childhood sketch / photo"></image-slot></div>
+                  <em>kid &amp; colour</em>
+                </div>
+              </div>
+            </div>
+            <div class="journey-pin" data-pin="1" style="left:32.5%;top:59.5%;" role="button" tabindex="0" aria-label="College of Fine Arts">
+              <div class="journey-pop">
+                <div class="journey-pop-card">
+                  <div class="slot"><image-slot id="journey-img-1" shape="rect" radius="0" placeholder="college studio"></image-slot></div>
+                  <em>fine arts</em>
+                </div>
+              </div>
+            </div>
+            <div class="journey-pin" data-pin="2" style="left:47.5%;top:41.5%;" role="button" tabindex="0" aria-label="UX Mint">
+              <div class="journey-pop">
+                <div class="journey-pop-card">
+                  <div class="slot"><image-slot id="journey-img-2" shape="rect" radius="0" placeholder="academy desk"></image-slot></div>
+                  <em>UX Mint</em>
+                </div>
+              </div>
+            </div>
+            <div class="journey-pin" data-pin="3" style="left:63.5%;top:25%;" role="button" tabindex="0" aria-label="Roaming">
+              <div class="journey-pop">
+                <div class="journey-pop-card">
+                  <div class="slot"><image-slot id="journey-img-3" shape="rect" radius="0" placeholder="somewhere between"></image-slot></div>
+                  <em>in transit</em>
+                </div>
+              </div>
+            </div>
+            <div class="journey-pin" data-pin="4" style="left:85%;top:16.5%;" role="button" tabindex="0" aria-label="Zoho">
+              <div class="journey-pop">
+                <div class="journey-pop-card">
+                  <div class="slot"><image-slot id="journey-img-4" shape="rect" radius="0" placeholder="zoho desk / craft"></image-slot></div>
+                  <em>at Zoho</em>
+                </div>
+              </div>
+            </div>
+            <div class="journey-pin" data-pin="5" style="left:90%;top:8%;" role="button" tabindex="0" aria-label="Continues">
+              <div class="journey-pop">
+                <div class="journey-pop-card">
+                  <div class="slot"><image-slot id="journey-img-5" shape="rect" radius="0" placeholder="what comes next"></image-slot></div>
+                  <em>to be continued</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
   </div>
+</section>
+
+<!-- WORK TEASER -->
+<section style="padding:clamp(48px,7vw,88px) clamp(24px,5vw,80px);max-width:1280px;margin:0 auto;">
+  <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#AAAAA0;margin-bottom:8px;font-weight:600;">Selected work</p>
+  <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.5vw,42px);font-weight:300;color:#1a1918;line-height:1.1;margin-bottom:16px;">The work. <em style="font-style:italic;color:#7a7870;">All of it.</em></h2>
+  <p style="font-size:14px;color:#6b6860;line-height:1.75;max-width:420px;margin-bottom:28px;">Branding, UI, illustration, and a few experiments — each piece on its own page.</p>
+  <a href="work.html" style="display:inline-flex;align-items:center;gap:8px;background:#1a1918;color:#fff;border-radius:100px;padding:12px 22px;font-size:13px;font-weight:500;">View all work →</a>
 </section>
 
 <!-- CONTACT FOOTER -->
@@ -409,21 +521,13 @@ class Component extends DCLogic {
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-    // Sections slide up
-    document.querySelectorAll('section:not(:first-of-type)').forEach((s, i) => {
+    // Sections slide up (skip journey — it has its own scroll choreography)
+    document.querySelectorAll('section:not(:first-of-type):not(#journey)').forEach((s, i) => {
       s.style.opacity = '0';
       s.style.transform = 'translateY(32px)';
       s.style.transition = 'opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1)';
       s.dataset.delay = i * 40;
       scrollObserver.observe(s);
-    });
-
-    // Work cards stagger
-    document.querySelectorAll('#work a, #work div[style*="dashed"]').forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(28px) scale(0.98)';
-      card.style.transition = `opacity 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 80}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 80}ms`;
-      scrollObserver.observe(card);
     });
 
     // About section children
@@ -434,9 +538,86 @@ class Component extends DCLogic {
       scrollObserver.observe(el);
     });
 
-    // Parallax on collage items
-    const collageItems = document.querySelectorAll('#intro-overlay ~ * [style*="float"]');
+    // Journey: sticky scroll with smooth text replace
+    const track = document.getElementById('journey-track');
+    const steps = Array.from(document.querySelectorAll('.journey-step'));
+    const pins = Array.from(document.querySelectorAll('.journey-pin'));
+    const progressDots = Array.from(document.querySelectorAll('#journey-progress i'));
+    const captions = [
+      'Home · Chennai',
+      'College of Fine Arts · Chennai',
+      'UX Mint · Academy',
+      'Roaming · Finding a place',
+      'Zoho · Designer',
+      'The path keeps going…'
+    ];
+    const captionEl = document.getElementById('journey-caption');
+    const pathEl = document.getElementById('journey-path');
+    let currentStep = 0;
+
+    const setJourneyStep = (index, direction) => {
+      if (index === currentStep && steps[index]?.classList.contains('is-active')) return;
+      const prev = currentStep;
+      currentStep = index;
+      steps.forEach((step, i) => {
+        step.classList.remove('is-active', 'is-exit');
+        if (i === index) {
+          step.classList.add('is-active');
+        } else if (i === prev && direction) {
+          step.classList.add('is-exit');
+        }
+      });
+      pins.forEach((pin, i) => pin.classList.toggle('is-lit', i <= index));
+      progressDots.forEach((dot, i) => dot.classList.toggle('is-on', i <= index));
+      if (captionEl) {
+        captionEl.style.opacity = '0';
+        setTimeout(() => {
+          captionEl.textContent = captions[index] || captions[0];
+          captionEl.style.opacity = '1';
+        }, 160);
+      }
+      if (pathEl) pathEl.classList.toggle('is-drawn', index >= 1);
+    };
+
+    const updateJourneyFromScroll = () => {
+      if (!track || !steps.length) return;
+      const rect = track.getBoundingClientRect();
+      const total = track.offsetHeight - window.innerHeight;
+      if (total <= 0) return;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const progress = scrolled / total;
+      const next = Math.min(steps.length - 1, Math.floor(progress * steps.length + 0.001));
+      const direction = next >= currentStep ? 1 : -1;
+      setJourneyStep(next, direction);
+    };
+
+    if (track && steps.length) {
+      setJourneyStep(0, 0);
+    }
+
+    pins.forEach((pin) => {
+      pin.addEventListener('mouseenter', () => {
+        pins.forEach((p) => p.classList.remove('is-open'));
+        pin.classList.add('is-open');
+        const idx = Number(pin.getAttribute('data-pin') || 0);
+        if (captionEl) captionEl.textContent = captions[idx] || captions[0];
+      });
+      pin.addEventListener('mouseleave', () => {
+        pin.classList.remove('is-open');
+        if (captionEl) captionEl.textContent = captions[currentStep] || captions[0];
+      });
+      pin.addEventListener('click', () => {
+        if (!track) return;
+        const idx = Number(pin.getAttribute('data-pin') || 0);
+        const total = track.offsetHeight - window.innerHeight;
+        const top = track.getBoundingClientRect().top + window.scrollY + (idx / steps.length) * total + 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    // Parallax + journey scroll replace
     const onScroll = () => {
+      updateJourneyFromScroll();
       const scrollY = window.scrollY;
       document.querySelectorAll('[style*="float1"], [style*="float2"], [style*="float3"]').forEach((el, i) => {
         const speed = [0.04, 0.06, 0.03][i % 3];
@@ -444,6 +625,8 @@ class Component extends DCLogic {
       });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateJourneyFromScroll);
+    onScroll();
   }
 }
 </script>
